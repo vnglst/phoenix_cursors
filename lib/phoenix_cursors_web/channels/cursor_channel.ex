@@ -12,6 +12,7 @@ defmodule PhoenixCursorsWeb.CursorChannel do
 
   @impl true
   def handle_in("move", %{"x" => x, "y" => y}, socket) do
+    broadcast(socket, "move", %{"x" => x, "y" => y})
     {:noreply, socket}
   end
 
