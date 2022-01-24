@@ -10,6 +10,10 @@ defmodule PhoenixCursorsWeb.Endpoint do
     signing_salt: "HEGQTDL9"
   ]
 
+  socket "/socket", PhoenixCursorsWeb.UserSocket,
+    websocket: true,
+    longpoll: false
+
   # socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
