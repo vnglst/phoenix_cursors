@@ -10,6 +10,11 @@ defmodule PhoenixCursorsWeb.CursorChannel do
     end
   end
 
+  @impl true
+  def handle_in("move", %{"x" => x, "y" => y}, socket) do
+    {:noreply, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   @impl true
