@@ -6,7 +6,9 @@ import {Socket} from "phoenix"
 
 // And connect to the path in "lib/phoenix_cursors_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket('/socket', {
+  params: { token: sessionStorage.userToken }
+});
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -67,12 +69,12 @@ channel.join()
       channel.push("move", { x, y });
     });
 
-    channel.on('move', ({ x, y }) => {
+    channel.on('move', ({ x, y, name }) => {
       const ul = document.createElement('ul');
       const cursorLi = cursorTemplate({
         x: x * window.innerWidth,
         y: y * window.innerHeight,
-        name: '???'
+        name
       });
       ul.appendChild(cursorLi);
       document.getElementById('cursor-list').innerHTML = ul.innerHTML;

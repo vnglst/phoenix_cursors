@@ -12,7 +12,8 @@ defmodule PhoenixCursorsWeb.CursorChannel do
 
   @impl true
   def handle_in("move", %{"x" => x, "y" => y}, socket) do
-    broadcast(socket, "move", %{"x" => x, "y" => y})
+    name = socket.assigns.current_user
+    broadcast(socket, "move", %{"x" => x, "y" => y, "name" => name})
     {:noreply, socket}
   end
 
