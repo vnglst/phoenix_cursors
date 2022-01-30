@@ -13,9 +13,10 @@ defmodule PhoenixCursors.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: PhoenixCursors.PubSub},
       # Start the Endpoint (http/https)
-      PhoenixCursorsWeb.Endpoint
+      PhoenixCursorsWeb.Endpoint,
       # Start a worker by calling: PhoenixCursors.Worker.start_link(arg)
       # {PhoenixCursors.Worker, arg}
+      PhoenixCursorsWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
