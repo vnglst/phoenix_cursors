@@ -74,18 +74,26 @@ channel
     console.log("Unable to join", resp);
   });
 
+// handle sending messages
+window.msgform.addEventListener("submit", (e) => {
+  e.preventDefault();
+  channel.push("msg_send", { msg: e.target.msg.value });
+  e.target.msg.value = "";
+});
+
 const presence = new Presence(channel);
 
 presence.onSync(() => {
   const ul = document.createElement("ul");
 
   presence.list((name, { metas: [firstDevice] }) => {
-    const { x, y, color } = firstDevice;
+    const { x, y, color, msg } = firstDevice;
     const cursorLi = cursorTemplate({
       name,
       x: x * window.innerWidth,
       y: y * window.innerHeight,
       color,
+      msg,
     });
     ul.appendChild(cursorLi);
   });
@@ -93,7 +101,7 @@ presence.onSync(() => {
   document.getElementById("cursor-list").innerHTML = ul.innerHTML;
 });
 
-function cursorTemplate({ x, y, name, color }) {
+function cursorTemplate({ x, y, name, color, msg }) {
   const li = document.createElement("li");
   li.classList =
     "flex flex-col absolute pointer-events-none whitespace-nowrap overflow-hidden";
@@ -117,11 +125,17 @@ function cursorTemplate({ x, y, name, color }) {
           points="9.2,7.3 9.2,18.5 12.2,15.6 12.6,15.5 17.4,15.5"
         />
     </svg>
-    <span class="mt-1 ml-4 px-1 text-sm text-white" />
+    <span class="mt-1 ml-4 px-1 text-sm text-white w-fit" />
   `;
 
   li.lastChild.style.backgroundColor = color;
   li.lastChild.textContent = name;
+
+  if (msg) {
+    li.innerHTML += `<span class="text-green-50 mt-1 py-0 px-1 text-sm text-left rounded-br-md opacity-80 fit-content" />`;
+    li.lastChild.style.backgroundColor = color;
+    li.lastChild.textContent = msg;
+  }
 
   return li;
 }

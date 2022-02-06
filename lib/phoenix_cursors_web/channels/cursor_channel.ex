@@ -37,6 +37,22 @@ defmodule PhoenixCursorsWeb.CursorChannel do
     {:noreply, socket}
   end
 
+  @impl true
+  def handle_in("msg_send", %{"msg" => msg}, socket) do
+    {:ok, _} =
+      Presence.update(socket, socket.assigns.current_user, fn previousState ->
+        Map.merge(
+          previousState,
+          %{
+            online_at: inspect(System.system_time(:second)),
+            msg: msg
+          }
+        )
+      end)
+
+    {:noreply, socket}
+  end
+
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (cursor:lobby).
   @impl true
